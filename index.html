@@ -742,17 +742,7 @@ function saveNickname(v){nickname=v.toUpperCase().replace(/[^A-Z0-9_]/g,'').slic
 function resetHighScore(){if(confirm('Reset all-time high score?')){allTimeHigh=0;saveP('high',0);document.getElementById('title-hs').classList.remove('show');document.getElementById('best-val').textContent='0';closeSettings();}}
 
 // ═══════════════════════
-// PORTRAIT LOCK
-// ═══════════════════════
-function checkOrientation(){
-  const isLandscape=window.innerWidth>window.innerHeight&&window.innerWidth>600;
-  document.getElementById('rotate-warning').classList.toggle('show',isLandscape);
-  if(gameActive&&isLandscape)pauseGame();
-}
-window.addEventListener('resize',checkOrientation);
-window.addEventListener('orientationchange',()=>setTimeout(checkOrientation,200));
-checkOrientation();
-if(screen.orientation?.lock)screen.orientation.lock('portrait').catch(()=>{});
+// PORTRAIT LOCK (moved to after variable init)
 
 // ═══════════════════════
 // DIFFICULTY
@@ -906,6 +896,17 @@ let score=0,streak=0,bestStreak=0,lives=3;
 let totalHits=0,totalMisses=0,level=1,speedMult=1.0;
 let ghostHitsThisGame=0,consecutiveBlitz=0,comebackHits=0;
 let gameActive=false,gamePaused=false,targets=[];
+
+// PORTRAIT LOCK
+function checkOrientation(){
+  const isLandscape=window.innerWidth>window.innerHeight&&window.innerWidth>600;
+  document.getElementById('rotate-warning').classList.toggle('show',isLandscape);
+  if(gameActive&&isLandscape)pauseGame();
+}
+window.addEventListener('resize',checkOrientation);
+window.addEventListener('orientationchange',()=>setTimeout(checkOrientation,200));
+checkOrientation();
+if(screen.orientation?.lock)screen.orientation.lock('portrait').catch(()=>{});
 let spawnTimer,diffTimer,timerBarAnim;
 let activeTimerTarget=null,gameStartTime=0,gameEndTime=0;
 let dailyRNG=null,lastMissPos={x:0,y:0},lastMissSize=50;
